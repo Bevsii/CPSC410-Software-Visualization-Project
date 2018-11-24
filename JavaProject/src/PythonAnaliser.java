@@ -30,7 +30,7 @@ public class PythonAnaliser {
             String currentLine;
 
             while (null != (currentLine = reader.readLine())){
-                currentLine = currentLine
+                currentLine = currentLine;
 
             }
         }
