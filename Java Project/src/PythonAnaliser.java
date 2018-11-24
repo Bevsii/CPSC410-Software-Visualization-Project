@@ -9,9 +9,9 @@ public class PythonAnaliser {
 
     public PythonAnaliser(String fileLocation) throws Exception {
         this.fileLocation = fileLocation;
-
         File pythonFolder = new File(fileLocation);
-        // TODO: Check that folder actually exists, otherwise throw an error
+
+        //Check that folder actually exists, otherwise throw an error
         if(!pythonFolder.exists()){
             throw new Exception("File location not found!");
         }
