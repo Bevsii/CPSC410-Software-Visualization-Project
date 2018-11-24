@@ -12,7 +12,9 @@ public class Main {
         String relativePath = "tmp" + fileSeparator + ".." + fileSeparator + outputFileName;
 
         // Create new output file with the given path
-        File outputFile = new File(relativePath);
+        // TODO: Figure out an appropriate place to save the output file that works on both windows and mac
+        // File outputFile = new File(relativePath);
+        File outputFile = new File(outputFileName);
 
         if (outputFile.createNewFile()){
             System.out.println("Created output file");
