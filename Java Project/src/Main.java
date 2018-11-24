@@ -1,11 +1,19 @@
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     private static String outputFileName = "Analysis.JSON";
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws Exception {
         // TODO: FIND THE FILE OR THROW AN ERROR OTHERWISE
+        if(args.length != 1){
+            //throw new Exception("Error: There should only be one terminual argument");
+        }
+        String tempLocation = "410Python/School";
+
+        PythonAnaliser pythonAnaliser = new PythonAnaliser(tempLocation);
 
         //Set up the path for the output file
         String fileSeparator =  System.getProperty("file.separator");
@@ -25,6 +33,9 @@ public class Main {
         }
 
         // TODO: STATIC ANALYSIS
+        pythonAnaliser.DynamicAnalysis(outputFile);
+
         // TODO: DYNAMIC ANALYSIS
+        pythonAnaliser.StaticAnalysis(outputFile);
     }
 }
