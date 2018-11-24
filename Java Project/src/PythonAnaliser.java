@@ -1,4 +1,4 @@
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +24,19 @@ public class PythonAnaliser {
         }
     }
 
-    public void StaticAnalysis(File outputFile){
-        //TODO
+    public void StaticAnalysis(File outputFile) throws IOException {
+        for(File file : pythonFiles){
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String currentLine;
+
+            while (null != (currentLine = reader.readLine())){
+                currentLine = currentLine
+
+            }
+        }
     }
 
-    public void DynamicAnalysis(File outputFIle){
-        //TODO
+    public void DynamicAnalysis(File outputFIle) throws IOException {
+
     }
 }
