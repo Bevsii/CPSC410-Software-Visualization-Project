@@ -26,7 +26,7 @@ public class MethodObject {
         //TODO: method calling this should be added to calledBy array, but we also want to store the number of times
         //TODO: that the method is called by methodCalling
         boolean alreadyCalled = false;
-        for (int i = 0; i<calledBy.size()){
+        for (int i = 0; i<calledBy.size(); i++){
             if (this.calledBy.get(i).getMethod().equals(methodCalling)){
                 alreadyCalled = true;
             }
