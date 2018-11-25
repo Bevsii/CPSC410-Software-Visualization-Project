@@ -96,6 +96,54 @@ public class PythonAnaliser {
     }
 
     public void DynamicAnalysis(PrintWriter writer) throws IOException {
+        for (File file : pythonFiles){
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String currentLine;
 
+            // Copy over python file
+            String pythonFileName = file.getName();
+            String logPythonFileName = "LOG_" + pythonFileName;
+            File outputPython = new File (logPythonFileName);
+            outputPython.createNewFile();
+
+            PrintWriter pythonWriter = new PrintWriter(logPythonFileName);
+
+            pythonWriter.println("from dynamic import log, startlog, endlog\n" +
+                    "import dynamic\n" +
+                    "startlog()\n");
+
+            // Loop over all lines in file
+            while (null != (currentLine = reader.readLine())) {
+                // Skip comments
+                if (currentLine.length() > 0 && currentLine.substring(0,1).equals("#")){
+                    // skip to next line
+                    currentLine = reader.readLine();
+                }
+
+                pythonWriter.println(currentLine + "\n");
+                // if line begins with def
+                if (currentLine.length() > 3){
+                    if(currentLine.trim().substring(0,3).equals("def")){
+                        // print log()
+                        pythonWriter.println("log()\n");
+                    }
+                }
+            }
+            // Print endlog()
+            pythonWriter.println("endlog()");
+
+            //TODO: Get path to Python File for logging (Are we assuming we ALWAYS start with Main.py?)
+            String pathToPythonFile = "";
+
+            // Execute python code:
+            try {
+                String command = "python /c start python " + pathToPythonFile;
+                // TODO: Add parameters accordingly; Delete if unnecessary (if we assume to always start with Main.py)
+                String params = "";
+                Process p = Runtime.getRuntime().exec(command + params);
+            } catch (Exception e) {
+                System.out.println("Cannot begin logging. Check the Python logging path.");
+            }
+        }
     }
 }
