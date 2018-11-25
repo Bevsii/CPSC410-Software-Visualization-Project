@@ -25,15 +25,31 @@ public class PythonAnaliser {
     }
 
     public void StaticAnalysis(File outputFile) throws IOException {
-        for(File file : pythonFiles){
+        for(File file : pythonFiles) {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String currentLine;
 
-            while (null != (currentLine = reader.readLine())){
-                currentLine = currentLine;
+            while (null != (currentLine = reader.readLine())) {
+                //System.out.println(currentLine);
 
+                //TODO: Skip comments
+
+                if (currentLine.length() > 5) { // Assert that length is greater than 5 so we don't run into issues with smaller lines
+                    if (currentLine.substring(0, 5).equals("class")) {
+                        //This is a class isolate the class name and print it
+                        String className = currentLine.substring(5, currentLine.length() - 1);
+                        printClass(className);
+                    }
+                }
+                else if (currentLine.length() > 3){
+                    currentLine = currentLine.trim();
+                }
             }
         }
+    }
+
+    private void printClass(String className){
+        System.out.println("BevLog: Class name: " + className);
     }
 
     public void DynamicAnalysis(File outputFIle) throws IOException {
