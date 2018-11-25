@@ -69,6 +69,7 @@ public class PythonAnaliser {
     }
 
     private void printClass(String className){
+        System.out.println("going to do something here");
         System.out.println("BevLog: Class name: " + className);
     }
 
