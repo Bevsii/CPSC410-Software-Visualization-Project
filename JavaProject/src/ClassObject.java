@@ -6,7 +6,9 @@ public class ClassObject {
     ArrayList<MethodObject> methodObjects;
 
     public ClassObject(String className){
+
         this.name = className;
+        this.methodObjects = new ArrayList<>();
     }
 
     public String getName(){
@@ -20,6 +22,7 @@ public class ClassObject {
     public void addMethod(MethodObject newMethod){
         if (!this.methodObjects.contains(newMethod)) {
             this.methodObjects.add(newMethod);
+            System.out.println("added "+ newMethod.getName()+ " to "+this.name);
         }
         else{
             //do nothing?

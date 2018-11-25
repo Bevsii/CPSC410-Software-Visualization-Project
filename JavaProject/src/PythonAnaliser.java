@@ -7,6 +7,8 @@ public class PythonAnaliser {
     private File directory;
     private List<File>  pythonFiles = new ArrayList<File>();
 
+    ClassManager classManager = ClassManager.getInstance();
+
     public PythonAnaliser(String fileLocation) throws Exception {
         this.fileLocation = fileLocation;
         File pythonFolder = new File(fileLocation);
@@ -69,12 +71,21 @@ public class PythonAnaliser {
     }
 
     private void printClass(String className){
-        System.out.println("going to do something here");
-        System.out.println("BevLog: Class name: " + className);
+        //System.out.println("BevLog: Class name: " + className);
+        ClassObject classObj = new ClassObject(className);
+        classManager.addClass(classObj);
     }
 
     private void printMethodName(String methodName){
-        System.out.println("BevLog: Method name: " + methodName);
+
+        MethodObject methObj = new MethodObject(methodName);
+
+        ClassObject classObject = classManager.classObjects.get(classManager.classObjects.size()-1);
+
+        classObject.addMethod(methObj);
+
+        //System.out.println("added new method "+methObj+" to class: "+classObject.getName()+classObject);
+        //System.out.println("BevLog: Method name: " + methodName);
     }
 
     public void DynamicAnalysis(File outputFIle) throws IOException {

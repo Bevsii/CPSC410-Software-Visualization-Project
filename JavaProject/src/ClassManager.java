@@ -6,7 +6,7 @@ public class ClassManager {
 
     private static ClassManager instance = null;
 
-    public ClassManager() throws Exception{
+    private ClassManager() throws Exception{
         if (instance != null){
             throw new Exception("ClassManager instance already exists");
         }
@@ -14,7 +14,7 @@ public class ClassManager {
     }
 
 
-    public ClassManager getInstance() throws Exception{
+    public static ClassManager getInstance() throws Exception{
         if (instance != null){
             return instance;
         }
@@ -26,6 +26,11 @@ public class ClassManager {
             }
         }
         return instance;
+    }
+
+    public void addClass(ClassObject classObject){
+        this.classObjects.add(classObject);
+        System.out.println("just added class: "+classObject.getName()+" to "+this);
     }
 
 
