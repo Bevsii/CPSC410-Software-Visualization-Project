@@ -31,6 +31,8 @@ public class Main {
             outputFile.createNewFile();
         }
 
+        //
+
         // TODO: STATIC ANALYSIS
         pythonAnaliser.DynamicAnalysis(outputFile);
 

@@ -41,8 +41,28 @@ public class PythonAnaliser {
                         printClass(className);
                     }
                 }
-                else if (currentLine.length() > 3){
+                if (currentLine.length() > 3){
                     currentLine = currentLine.trim();
+                    if(currentLine.substring(0,3).equals("def")){
+
+                        currentLine = currentLine.substring(4); // Removing "def " from the current line
+
+                        String methodName = "";
+                        boolean hasReachedParameters = false;
+                        for (int i = 0; i < currentLine.length(); i++){
+                            char c = currentLine.charAt(i);
+
+                            if (!hasReachedParameters){
+                                if (c != '('){
+                                    methodName = methodName + c;
+                                } else{
+                                    hasReachedParameters = true;
+                                }
+                            }
+                        }
+
+                        printMethodName(methodName);
+                    }
                 }
             }
         }
@@ -50,6 +70,10 @@ public class PythonAnaliser {
 
     private void printClass(String className){
         System.out.println("BevLog: Class name: " + className);
+    }
+
+    private void printMethodName(String methodName){
+        System.out.println("BevLog: Method name: " + methodName);
     }
 
     public void DynamicAnalysis(File outputFIle) throws IOException {
