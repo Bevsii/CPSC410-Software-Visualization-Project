@@ -15,8 +15,9 @@ public class Main {
 
         //Set up the path for the output file
         String fileSeparator =  System.getProperty("file.separator");
+        String hardCode = "/Users/rorycourt/1-UBC/04/410";
 
-        String tempLocation = "E:"+ fileSeparator + "CPSC410-Software-Visualization-Project"+ fileSeparator+ "410Python" + fileSeparator + "School";
+        String tempLocation = hardCode + fileSeparator + "CPSC410-Software-Visualization-Project"+ fileSeparator+ "410Python" + fileSeparator + "School";
 
         PythonAnaliser pythonAnaliser = new PythonAnaliser(tempLocation);
 
