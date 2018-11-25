@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class Main {
         //Set up the path for the output file
         String fileSeparator =  System.getProperty("file.separator");
 
+        // NOTE: This is hardcoded for testing purposes only, normally we are going to get the absolute path to the python from the terminal arguments
         String tempLocation = "E:"+ fileSeparator + "CPSC410-Software-Visualization-Project"+ fileSeparator+ "410Python" + fileSeparator + "School";
 
         PythonAnaliser pythonAnaliser = new PythonAnaliser(tempLocation);
@@ -31,12 +33,18 @@ public class Main {
             outputFile.createNewFile();
         }
 
-        //
+        PrintWriter writer = new PrintWriter(outputFileName);
+
+        // Begin the JSON file
+        writer.println("{");
 
         // TODO: STATIC ANALYSIS
-        pythonAnaliser.DynamicAnalysis(outputFile);
+        pythonAnaliser.DynamicAnalysis(writer);
 
         // TODO: DYNAMIC ANALYSIS
-        pythonAnaliser.StaticAnalysis(outputFile);
+        pythonAnaliser.StaticAnalysis(writer);
+
+        writer.close();
     }
+
 }
