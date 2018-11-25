@@ -32,13 +32,15 @@ public class PythonAnaliser {
 
         for(File file : pythonFiles) {
             BufferedReader reader = new BufferedReader(new FileReader(file));
+            boolean fileHasClass = false;
+            boolean hasFoundFirstMethod = false;
             String currentLine;
 
             while (null != (currentLine = reader.readLine())) {
-                //System.out.println(currentLine);
 
                 if (currentLine.length() > 5) { // Assert that length is greater than 5 so we don't run into issues with smaller lines
                     if (currentLine.substring(0, 5).equals("class")) {
+                        fileHasClass = true;
                         //This is a class isolate the class name and print it
                         String className = currentLine.substring(5, currentLine.length() - 1);
                         printClass(className, writer);
@@ -63,14 +65,24 @@ public class PythonAnaliser {
                                 }
                             }
                         }
-
+                        if (hasFoundFirstMethod) {
+                            writer.print(",\n");
+                        }
+                        else {
+                            hasFoundFirstMethod = true;
+                        }
                         printMethodName(methodName, writer);
                     }
                 }
             }
-            writer.println(INDENT + INDENT + INDENT + "]");
-            writer.println(INDENT + INDENT + "}");
+            if(fileHasClass) {
+                writer.print("\n");
+                writer.println(INDENT + INDENT + INDENT + "]");
+                writer.println(INDENT + INDENT + "}");
+            }
         }
+
+        writer.println(INDENT + "],");
     }
 
     private void printClass(String className, PrintWriter writer){
@@ -79,7 +91,7 @@ public class PythonAnaliser {
     }
 
     private void printMethodName(String methodName, PrintWriter writer){
-        writer.println(INDENT + INDENT + INDENT + "\"" + methodName + "\"");
+        writer.print(INDENT + INDENT + INDENT + "\"" + methodName + "\"");
         System.out.println("BevLog: Method name: " + methodName);
     }
 

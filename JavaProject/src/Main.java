@@ -38,11 +38,13 @@ public class Main {
         // Begin the JSON file
         writer.println("{");
 
-        // TODO: STATIC ANALYSIS
-        pythonAnaliser.DynamicAnalysis(writer);
+        // STATIC ANALYSIS
+        pythonAnaliser.StaticAnalysis(writer);
+
+        writer.println("}");
 
         // TODO: DYNAMIC ANALYSIS
-        pythonAnaliser.StaticAnalysis(writer);
+        pythonAnaliser.DynamicAnalysis(writer);
 
         writer.close();
     }
