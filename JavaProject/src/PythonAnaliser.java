@@ -52,19 +52,8 @@ public class PythonAnaliser {
 
                         currentLine = currentLine.substring(4); // Removing "def " from the current line
 
-                        String methodName = "";
-                        boolean hasReachedParameters = false;
-                        for (int i = 0; i < currentLine.length(); i++){
-                            char c = currentLine.charAt(i);
+                        String methodName = getMethodName(currentLine);
 
-                            if (!hasReachedParameters){
-                                if (c != '('){
-                                    methodName = methodName + c;
-                                } else{
-                                    hasReachedParameters = true;
-                                }
-                            }
-                        }
                         if (hasFoundFirstMethod) {
                             writer.print(",\n");
                         }
@@ -95,6 +84,24 @@ public class PythonAnaliser {
         System.out.println("BevLog: Method name: " + methodName);
     }
 
+    private String getMethodName(String currentLine){
+        String methodName = "";
+        boolean hasReachedParameters = false;
+        for (int i = 0; i < currentLine.length(); i++){
+            char c = currentLine.charAt(i);
+
+            if (!hasReachedParameters){
+                if (c != '('){
+                    methodName = methodName + c;
+                } else{
+                    hasReachedParameters = true;
+                }
+            }
+        }
+
+        return methodName;
+    }
+
     public void DynamicAnalysis(PrintWriter writer) throws IOException {
         for (File file : pythonFiles){
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -110,6 +117,7 @@ public class PythonAnaliser {
 
             pythonWriter.println("from dynamic import log, startlog, endlog\n" +
                     "import dynamic\n" +
+                    "import inspect\n" +
                     "startlog()\n");
 
             // Loop over all lines in file
@@ -124,23 +132,30 @@ public class PythonAnaliser {
                 // if line begins with def
                 if (currentLine.length() > 3){
                     if(currentLine.trim().substring(0,3).equals("def")){
-                        // print log()
-                        pythonWriter.println("log()\n");
+                        currentLine = currentLine.substring(4); // Removing "def " from the current line
+
+                        String methodName = getMethodName(currentLine);
+
+                        // Get argument values and print log().
+                        pythonWriter.println("paramsDict = [locals()[arg] for arg in inspect.getargspec(" + methodName + ").args]\n" +
+                                            "log(paramsDict)\n");
                     }
                 }
             }
             // Print endlog()
             pythonWriter.println("endlog()");
 
-            //TODO: Get path to Python File for logging (Are we assuming we ALWAYS start with Main.py?)
-            String pathToPythonFile = "";
+            //TODO: Get path to Python File for logging (assuming we ALWAYS start with Main.py)
+            String path = "";
+            String pathToPythonFile = path + "LOG_Main.py";
 
             // Execute python code:
             try {
-                String command = "python /c start python " + pathToPythonFile;
-                // TODO: Add parameters accordingly; Delete if unnecessary (if we assume to always start with Main.py)
+                String command = "python /c start /wait python " + pathToPythonFile;
+                // TODO: Add parameters accordingly; Delete if unnecessary
                 String params = "";
                 Process p = Runtime.getRuntime().exec(command + params);
+                // TODO: Join Python output JSON with our Static JSON
             } catch (Exception e) {
                 System.out.println("Cannot begin logging. Check the Python logging path.");
             }
