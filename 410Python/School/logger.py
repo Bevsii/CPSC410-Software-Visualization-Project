@@ -27,15 +27,12 @@ def endlog():
     json.dump(dynamicJSON, outfile)
 
 
-'''
-This outputs a JSON file with the following format:
+# This outputs a JSON file with the following format:
+# {
+#    "dynamic": [
+#        { ... },
+#        { ... }
+#    ]
+# }
 
-{
-    "dynamic": [
-        { ... },
-        { ... }
-    ]
-}
-
-With the output, we can append the output file to our static analysis done in Java.
-'''
+# With the output, we can append the output file to our static analysis done in Java.
