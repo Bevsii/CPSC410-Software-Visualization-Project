@@ -19,3 +19,8 @@ Note: A few constraints must be met in the python code for this program to work 
 - Set "Main" as your main class
 - Press OK, and then apply your changes
 - Once that is done go to build>Build Artefacts> Select JAR file
+
+## How to Run:
+
+- Once you finished building your jar file navigate to it's location in your terminal
+- run "java -jar 410-proj2.jar arg" where 'arg' is the path to the python code directory
