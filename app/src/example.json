@@ -1,0 +1,43 @@
+{
+  "static" : [
+    {"classa" : [
+      "metha",
+      "methb",
+      "methc",
+      "meth1"
+      ]
+    },
+    {"classb" : [
+      "methd",
+      "methe"
+      ]
+    }
+  ],
+  "dynamic" : [
+    {
+      "called": "classb.methd",
+      "caller": "classa.methb",
+      "params": [32, false]
+    },
+    {
+      "called": "classa.metha",
+      "caller": "classa.methc",
+      "params": []
+    },
+    {
+      "called": "classb.methe",
+      "caller": "classa.meth1",
+      "params": ["this is a string"]
+    },
+    {
+      "called": "classb.methd",
+      "caller": "classa.methb",
+      "params": [32, false]
+    },
+    {
+      "called": "classb.methd",
+      "caller": "classa.methb",
+      "params": [32, false]
+    }
+  ]
+}

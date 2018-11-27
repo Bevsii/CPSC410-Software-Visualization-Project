@@ -1,0 +1,65 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 6vmin;
+  padding: 5px;
+}
+
+.App-header {
+  background-color: #34404c;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: top;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  font-family: Courier;
+  height: 10%;
+}
+
+.App-body {
+  font-size: 16px;
+  color: black;
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  justify-content: left;
+  background-color: #9fa6ad;
+  height: 700px;
+}
+
+.divider {
+  height: 700px;
+  background-color: #34404c;
+  width: 2px;
+}
+
+.classes {
+  width: 20%;
+  height: 90%;
+  overflow: scroll;
+}
+
+.methods {
+  width: 20%;
+  height: 90%;
+  overflow: scroll;
+}
+
+.items {
+  width: 60%;
+  height: 90%;
+  overflow: scroll;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
