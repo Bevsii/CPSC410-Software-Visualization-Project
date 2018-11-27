@@ -18,7 +18,7 @@ public class Main {
         String fileSeparator =  System.getProperty("file.separator");
 
         // NOTE: This is hardcoded for testing purposes only, normally we are going to get the absolute path to the python from the terminal arguments
-        String tempLocation = "E:"+ fileSeparator + "CPSC410-Software-Visualization-Project"+ fileSeparator+ "410Python" + fileSeparator + "School";
+        String tempLocation = "/Users/rorycourt/1-UBC/04/410"+ fileSeparator + "CPSC410-Software-Visualization-Project"+ fileSeparator+ "410Python" + fileSeparator + "School";
 
         PythonAnaliser pythonAnaliser = new PythonAnaliser(tempLocation);
 

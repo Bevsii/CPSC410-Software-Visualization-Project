@@ -8,5 +8,4 @@ class Grade:
         return self.grade
     def getSubGrade(self):
         return self.subject
-
-
+    

@@ -35,34 +35,40 @@ public class PythonAnaliser {
             boolean fileHasClass = false;
             boolean hasFoundFirstMethod = false;
             String currentLine;
-
-            while (null != (currentLine = reader.readLine())) {
-
-                if (currentLine.length() > 5) { // Assert that length is greater than 5 so we don't run into issues with smaller lines
-                    if (currentLine.substring(0, 5).equals("class")) {
-                        fileHasClass = true;
-                        //This is a class isolate the class name and print it
-                        String className = currentLine.substring(5, currentLine.length() - 1);
-                        printClass(className, writer);
-                    }
-                }
-                if (currentLine.trim().length() > 3){
-                    currentLine = currentLine.trim();
-                    if(currentLine.substring(0,3).equals("def")){
-
-                        currentLine = currentLine.substring(4); // Removing "def " from the current line
-
-                        String methodName = getMethodName(currentLine);
-
-                        if (hasFoundFirstMethod) {
-                            writer.print(",\n");
+            int currLineCount = 0;
+            String catchCurrentLine="";
+            try {
+                while ((currentLine = reader.readLine())!=null && !currentLine.isEmpty()) {
+                    catchCurrentLine = currentLine;
+                    //System.out.println("checking " + currentLine + " in " + file);
+                    if (currentLine.length() > 5) { // Assert that length is greater than 5 so we don't run into issues with smaller lines
+                        if (currentLine.substring(0, 5).equals("class")) {
+                            fileHasClass = true;
+                            //This is a class isolate the class name and print it
+                            String className = currentLine.substring(5, currentLine.length() - 1);
+                            printClass(className, writer);
                         }
-                        else {
-                            hasFoundFirstMethod = true;
-                        }
-                        printMethodName(methodName, writer);
                     }
+                    if (currentLine.trim().length() > 3) {
+                        currentLine = currentLine.trim();
+                        if (currentLine.startsWith("def")) {
+
+                            currentLine = currentLine.substring(4); // Removing "def " from the current line
+
+                            String methodName = getMethodName(currentLine);
+
+                            if (hasFoundFirstMethod) {
+                                writer.print(",\n");
+                            } else {
+                                hasFoundFirstMethod = true;
+                            }
+                            printMethodName(methodName, writer);
+                        }
+                    }
+                    currLineCount++;
                 }
+            }catch (Exception e){
+                System.out.println("null pointer excpetion occured with line: "+catchCurrentLine+" at line# "+currLineCount+" in file "+file);
             }
             if(fileHasClass) {
                 writer.print("\n");
@@ -121,7 +127,7 @@ public class PythonAnaliser {
                     "startlog()\n");
 
             // Loop over all lines in file
-            while (null != (currentLine = reader.readLine())) {
+            while ((currentLine = reader.readLine())!=null && !currentLine.isEmpty()) {
                 // Skip comments
                 if (currentLine.length() > 0 && currentLine.substring(0,1).equals("#")){
                     // skip to next line
@@ -131,7 +137,7 @@ public class PythonAnaliser {
                 pythonWriter.println(currentLine + "\n");
                 // if line begins with def
                 if (currentLine.length() > 3){
-                    if(currentLine.trim().substring(0,3).equals("def")){
+                    if(currentLine.trim().startsWith("def")){
                         currentLine = currentLine.substring(4); // Removing "def " from the current line
 
                         String methodName = getMethodName(currentLine);
