@@ -19,7 +19,7 @@ Note: A few constraints must be met in the python code for this program to work 
 - Select JAR>From Modules With Dependencies
 - Set "Main" as your main class
 - Press OK, and then apply your changes
-- Once that is done go to build>Build Artefacts> Select JAR file
+- Once that is done go to Build>Build Artifacts> Select JAR file
 
 ## How to Run Analysis:
 
