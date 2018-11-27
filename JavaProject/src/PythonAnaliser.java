@@ -1,6 +1,12 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 
 public class PythonAnaliser {
     public static final String INDENT = "  ";
@@ -153,17 +159,35 @@ public class PythonAnaliser {
             // Print endlog()
             pythonWriter.println("endlog()");
 
-            //TODO: Get path to Python File for logging (assuming we ALWAYS start with Main.py)
-            String path = "";
-            String pathToPythonFile = path + "LOG_Main.py";
+            // Get path to Python File for logging (assuming we ALWAYS start with Main.py)
+            //      - Current location is CPSC410-Softwa...\JavaProject\src
+            //      - Want to move outside of src and JavaProject into
+            //      - Once in CPSC410-Softwa..., move into Python410
+            String path = "..\\..\\Python410";
+            String pathToPythonFile = path + "\\LOG_Main.py";
 
             // Execute python code:
             try {
+                // /wait to wait for command to finish executing (as in, wait until we have all the files done.
                 String command = "python /c start /wait python " + pathToPythonFile;
-                // TODO: Add parameters accordingly; Delete if unnecessary
+                // Add parameters accordingly
                 String params = "";
                 Process p = Runtime.getRuntime().exec(command + params);
-                // TODO: Join Python output JSON with our Static JSON
+
+                JSONParser parser = new JSONParser();
+                try {
+                    Object obj = parser.parse(new FileReader("..\\..\\Python410\\dynamic.json"));
+                    JSONObject jsonObject =  (JSONObject) obj;
+                    // TODO: Write dynamic.json into writer
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
             } catch (Exception e) {
                 System.out.println("Cannot begin logging. Check the Python logging path.");
             }

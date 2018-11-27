@@ -24,6 +24,8 @@ public class Main {
 
         PythonAnaliser pythonAnaliser = new PythonAnaliser(tempLocation);
 
+        // TODO: Delete all Python files starting with "LOG_" in Python410
+
         // Create new output file
         File outputFile = new File(outputFileName);
 
@@ -45,7 +47,6 @@ public class Main {
 
         writer.println("}");
 
-        // TODO: DYNAMIC ANALYSIS
         pythonAnaliser.DynamicAnalysis(writer);
 
         writer.close();
