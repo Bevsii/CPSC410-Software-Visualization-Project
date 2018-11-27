@@ -9,3 +9,13 @@ https://code.google.com/archive/p/json-simple/downloads
 Note: A few constraints must be met in the python code for this program to work correctly:
 - One class per file
 - Each class definition, method definition, and method calls must be on their own line
+
+## How to build:
+
+- Open intelliJ
+- Go to File>Project Structure>Artifacts
+- Press the "+" sign
+- Select JAR>From Modules With Dependencies
+- Set "Main" as your main class
+- Press OK, and then apply your changes
+- Once that is done go to build>Build Artefacts> Select JAR file
