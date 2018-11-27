@@ -35,9 +35,9 @@ public class PythonAnaliser {
             boolean fileHasClass = false;
             boolean hasFoundFirstMethod = false;
             String currentLine;
-            while ((currentLine = reader.readLine())!=null && !currentLine.isEmpty()) {
+            while ((currentLine = reader.readLine())!=null) {
 
-                //System.out.println("checking " + currentLine + " in " + file);
+                System.out.println("RorLog for Static: checking " + currentLine.toString() + " in " + file.getName()+"\n"+"------");
                 if (currentLine.length() > 5) { // Assert that length is greater than 5 so we don't run into issues with smaller lines
                     if (currentLine.substring(0, 5).equals("class")) {
                         fileHasClass = true;
@@ -121,7 +121,10 @@ public class PythonAnaliser {
                     "startlog()\n");
 
             // Loop over all lines in file
-            while ((currentLine = reader.readLine())!=null && !currentLine.isEmpty()) {
+            currentLine = reader.readLine();
+            while (currentLine != null) {
+
+                System.out.println("RorLog: Dynamic currentLine is: "+currentLine.toString()+" from file: "+file.getName());
                 // Skip comments
                 if (currentLine.length() > 0 && currentLine.substring(0,1).equals("#")){
                     // skip to next line
@@ -141,6 +144,7 @@ public class PythonAnaliser {
                                             "log(paramsDict)\n");
                     }
                 }
+                currentLine = reader.readLine();
             }
             // Print endlog()
             pythonWriter.println("endlog()");

@@ -16,9 +16,11 @@ public class Main {
 
         //Set up the path for the output file
         String fileSeparator =  System.getProperty("file.separator");
+        String parentDirectory = "/Users/rorycourt/1-UBC/04/410";
+        //String parentDirectory = "E:";
 
         // NOTE: This is hardcoded for testing purposes only, normally we are going to get the absolute path to the python from the terminal arguments
-        String tempLocation = "/Users/rorycourt/1-UBC/04/410"+ fileSeparator + "CPSC410-Software-Visualization-Project"+ fileSeparator+ "410Python" + fileSeparator + "School";
+        String tempLocation = parentDirectory + fileSeparator + "CPSC410-Software-Visualization-Project"+ fileSeparator+ "410Python" + fileSeparator + "School";
 
         PythonAnaliser pythonAnaliser = new PythonAnaliser(tempLocation);
 
