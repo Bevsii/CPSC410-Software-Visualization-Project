@@ -129,10 +129,14 @@ public class PythonAnaliser {
                 if (currentLine.length() > 0 && currentLine.substring(0,1).equals("#")){
                     // skip to next line
                     currentLine = reader.readLine();
+                    if(currentLine == null){
+                        break;
+                    }
                 }
 
                 pythonWriter.println(currentLine + "\n");
                 // if line begins with def
+                System.out.println("RorLog: now currentLine is:"+currentLine);
                 if (currentLine.length() > 3){
                     if(currentLine.trim().startsWith("def")){
                         currentLine = currentLine.substring(4); // Removing "def " from the current line
