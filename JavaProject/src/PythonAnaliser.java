@@ -46,7 +46,7 @@ public class PythonAnaliser {
                         printClass(className, writer);
                     }
                 }
-                if (currentLine.length() > 3){
+                if (currentLine.trim().length() > 3){
                     currentLine = currentLine.trim();
                     if(currentLine.substring(0,3).equals("def")){
 
