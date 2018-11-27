@@ -13,7 +13,7 @@ Note: A few constraints must be met in the python code for this program to work 
 ## How to build:
 
 - Open intelliJ
-- Go to File>Project Structure>Artifacts (Note, if you already see a JAR artifact in the list then skip to "How to Run"
+- Go to File>Project Structure>Artifacts (Note, if you already see a JAR artifact in the list then skip to the last step of this section
 - Press the "+" sign
 - Select JAR>From Modules With Dependencies
 - Set "Main" as your main class
