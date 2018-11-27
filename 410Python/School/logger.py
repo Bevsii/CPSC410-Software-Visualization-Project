@@ -1,7 +1,7 @@
 import json
 import inspect
 
-outfile = open('dynamic.json', 'w')
+outfile = open('dynamic.json', 'x')
 
 
 def log(paramsDict):
