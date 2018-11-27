@@ -35,41 +35,35 @@ public class PythonAnaliser {
             boolean fileHasClass = false;
             boolean hasFoundFirstMethod = false;
             String currentLine;
-            int currLineCount = 0;
-            String catchCurrentLine="";
-            try {
-                while ((currentLine = reader.readLine())!=null && !currentLine.isEmpty()) {
-                    catchCurrentLine = currentLine;
-                    //System.out.println("checking " + currentLine + " in " + file);
-                    if (currentLine.length() > 5) { // Assert that length is greater than 5 so we don't run into issues with smaller lines
-                        if (currentLine.substring(0, 5).equals("class")) {
-                            fileHasClass = true;
-                            //This is a class isolate the class name and print it
-                            String className = currentLine.substring(5, currentLine.length() - 1);
-                            printClass(className, writer);
-                        }
+            while ((currentLine = reader.readLine())!=null && !currentLine.isEmpty()) {
+
+                //System.out.println("checking " + currentLine + " in " + file);
+                if (currentLine.length() > 5) { // Assert that length is greater than 5 so we don't run into issues with smaller lines
+                    if (currentLine.substring(0, 5).equals("class")) {
+                        fileHasClass = true;
+                        //This is a class isolate the class name and print it
+                        String className = currentLine.substring(5, currentLine.length() - 1);
+                        printClass(className, writer);
                     }
-                    if (currentLine.trim().length() > 3) {
-                        currentLine = currentLine.trim();
-                        if (currentLine.startsWith("def")) {
-
-                            currentLine = currentLine.substring(4); // Removing "def " from the current line
-
-                            String methodName = getMethodName(currentLine);
-
-                            if (hasFoundFirstMethod) {
-                                writer.print(",\n");
-                            } else {
-                                hasFoundFirstMethod = true;
-                            }
-                            printMethodName(methodName, writer);
-                        }
-                    }
-                    currLineCount++;
                 }
-            }catch (Exception e){
-                System.out.println("null pointer excpetion occured with line: "+catchCurrentLine+" at line# "+currLineCount+" in file "+file);
+                if (currentLine.trim().length() > 3) {
+                    currentLine = currentLine.trim();
+                    if (currentLine.startsWith("def")) {
+
+                        currentLine = currentLine.substring(4); // Removing "def " from the current line
+
+                        String methodName = getMethodName(currentLine);
+
+                        if (hasFoundFirstMethod) {
+                            writer.print(",\n");
+                        } else {
+                            hasFoundFirstMethod = true;
+                        }
+                        printMethodName(methodName, writer);
+                    }
+                }
             }
+
             if(fileHasClass) {
                 writer.print("\n");
                 writer.println(INDENT + INDENT + INDENT + "]");
