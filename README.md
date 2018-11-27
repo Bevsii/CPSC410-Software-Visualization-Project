@@ -8,6 +8,7 @@ https://code.google.com/archive/p/json-simple/downloads
 
 Note: A few constraints must be met in the python code for this program to work correctly:
 - One class per file
+- All python files are in the same directory
 - Each class definition, method definition, and method calls must be on their own line
 
 ## How to build:
