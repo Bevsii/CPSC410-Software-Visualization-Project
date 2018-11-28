@@ -66,10 +66,6 @@ class App extends Component {
   render() {
     let s = jsonData.static;
     let classList = s.map(c => this.makeClass(c))
-    let cc = 'Select a class!'
-    if (this.state.currentClass) {
-      cc = 'In Class: ' + this.state.currentClass
-    }
     return (
       <div className="App">
         <header className="App-header">
@@ -86,12 +82,6 @@ class App extends Component {
           <div className="divider"/>
           <div className="methods">
             <List subheader={<ListSubheader style={{fontSize: '25px'}}>Methods</ListSubheader>} >
-              <Divider />
-              <ListItem>
-                <ListItemText 
-                  style={{textAlign: 'center'}}
-                  primary={cc} />
-              </ListItem>
               <Divider />
               {!this.state.methodsToDisplay ? <div/> : this.state.methodsToDisplay.map(m => this.makeMethod(m))}
             </List>
