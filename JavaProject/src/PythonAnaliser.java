@@ -239,4 +239,18 @@ public class PythonAnaliser {
         */
         }
     }
+
+    // Merges the second file on to the first file
+    // NOTE: Call this after you call writer.close on any of the files that are passed as arguments
+    public void MergeOutputFiles(File firstFile, File secondFile) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(secondFile));
+        String currentLine;
+        BufferedWriter writer = new BufferedWriter(new FileWriter(firstFile, true));
+
+        while ((currentLine = reader.readLine())!=null) {
+            writer.append(currentLine + "\n");
+        }
+
+        writer.close();
+    }
 }
