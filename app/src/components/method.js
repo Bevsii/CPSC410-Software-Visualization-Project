@@ -15,7 +15,10 @@ class Method extends Component {
 	render() {
 		return (
 			<div>
-				<Button fullWidth={true} classes={{root: 'button'}} onClick={() => this.props.handler(this.props.name)}>
+				<Button fullWidth={true}
+					style={this.props.selected ? {color: '#9fa6ad', backgroundColor: '#34404c'} : {}}
+					classes={{root: 'button'}}
+					onClick={() => this.props.handler(this.props.name)}>
 					{this.props.name}
 				</Button>
 				<div style={{height: 5}} />

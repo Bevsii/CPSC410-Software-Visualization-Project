@@ -49,12 +49,12 @@ class App extends Component {
     let methods = c[name];
     return (
     <div className="classItem">
-      <Classes name={name} methods={methods} handler={this.classHandler}/>
+      <Classes selected={(this.state.currentClass == name)} name={name} methods={methods} handler={this.classHandler}/>
     </div>)
   }
 
   makeMethod(m) {
-    return <Method name={m} handler={this.methodHandler}/>
+    return <Method name={m} selected={(this.state.currentFilter == m)} handler={this.methodHandler}/>
   }
 
   makeItems() {
