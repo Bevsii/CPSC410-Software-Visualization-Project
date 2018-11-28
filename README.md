@@ -7,6 +7,8 @@ Note: The JSON-simple Java toolkit is required for reading JSON files in this pr
 
 Get the JSON-simple .jar here:
 https://code.google.com/archive/p/json-simple/downloads
+Get the Jackson JSON Processor .jars here:
+https://search.maven.org/search?q=g:com.fasterxml.jackson.core
 
 Note: A few constraints must be met in the python code for this program to work correctly:
 - One class per file

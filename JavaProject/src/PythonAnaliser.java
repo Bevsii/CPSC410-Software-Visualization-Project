@@ -2,6 +2,11 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationConfig;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -157,7 +162,7 @@ public class PythonAnaliser {
                     }
                     else {
                         pythonWriter.write(tempLine);
-                        System.out.println("JusLog: Possible import mismatch. Check DynamicAnalysis FROM case.");
+                        System.out.println("JLog: Possible import mismatch. Check DynamicAnalysis FROM case.");
                     }
                 }
                 // If the file has a class, defs have two indents, and there is a class name.
@@ -211,16 +216,18 @@ public class PythonAnaliser {
             // /wait to wait for command to finish executing (as in, wait until we have all the files done.
             String command = "python /wait Main.py";
             // Process p = Runtime.getRuntime().exec(command);
-            ProcessBuilder pb = new ProcessBuilder("python","/wait", "Main.py");
+            ProcessBuilder pb = new ProcessBuilder("C:\\Users\\konpeitoBOX\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe", "/wait","Main.py");
             Process p = pb.start();
 
-
-            /*
             try {
                 JSONParser parser = new JSONParser();
-                Object obj = parser.parse(new FileReader(".." + fileSeparator + ".." + fileSeparator + "Python410" + fileSeparator + "dynamic.json"));
+                Object obj = parser.parse(new FileReader("dynamic.json"));
                 JSONObject jsonObject =  (JSONObject) obj;
                 // TODO: Write dynamic.json into writer
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+                ObjectWriter prettyWriter = mapper.writerWithDefaultPrettyPrinter();
+                prettyWriter.writeValue(new File("Analysis.JSON"), jsonObject);
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -229,9 +236,9 @@ public class PythonAnaliser {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            */
+
         } catch (Exception e) {
-            System.out.println("Cannot begin logging. Check the Python logging path." + e);
+            System.out.println("JLog: Cannot begin logging. " + e);
         }
     }
 
