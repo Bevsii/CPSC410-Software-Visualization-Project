@@ -111,60 +111,103 @@ public class PythonAnaliser {
     public void DynamicAnalysis(PrintWriter writer) throws IOException {
         for (File file : pythonFiles){
             BufferedReader reader = new BufferedReader(new FileReader(file));
-            String currentLine;
+
 
             // Copy over python file
             String pythonFileName = file.getName();
-            String logPythonFileName = "LOG_" + pythonFileName;
+            String logPythonFileName = pythonFileName;
             File outputPython = new File (logPythonFileName);
+            boolean dynamicHasClass = false;
+            String className = "";
+            String methodName = "";
+            String varINDENT = "    ";
             outputPython.createNewFile();
 
-            PrintWriter pythonWriter = new PrintWriter(logPythonFileName);
+            PrintWriter pythonWriter = new PrintWriter(new FileOutputStream(outputPython), true);
 
-            pythonWriter.println("from dynamic import log, startlog, endlog\n" +
+            pythonWriter.print("from _LOGGER_ import startlog, log, endlog\n" +
                     "import dynamic\n" +
                     "import inspect\n" +
                     "startlog()\n");
 
             // Loop over all lines in file
-            currentLine = reader.readLine();
-            while (currentLine != null) {
+            String currentLine;
+            while ((currentLine = reader.readLine()) != null) {
 
-                System.out.println("RorLog: Dynamic currentLine is: "+currentLine.toString()+" from file: "+file.getName());
-                // Skip comments
-                if (currentLine.length() > 0 && currentLine.substring(0,1).equals("#")){
-                    // skip to next line
-                    currentLine = reader.readLine();
-                    if(currentLine == null){
-                        break;
+                // if from ... import ... statement,
+                //      i.e. (from folder.class import ...)
+                if(currentLine.trim().startsWith("from")){
+                    // Remove "from " from currentLine (folder.class import ...)
+                    String tempLine = currentLine;
+                    currentLine = currentLine.substring(5);
+                    boolean hasReachedClassName = false;
+                    // While currentLine hasn't been completely consumed, and we haven't reached the "." in the "folder.class" statement,
+                    while(currentLine != null && !hasReachedClassName) {
+                        String c = currentLine.substring(0,1);
+                        currentLine = currentLine.substring(1);
+                        if(c.equals(".")){
+                            hasReachedClassName = true;
+                        }
+                    }
+                    // If we have truncated the from folder.class import ... statement to:
+                    //      - .class import ...,
+                    // we can now write as: "from class import ..."
+                    if(hasReachedClassName){
+                        pythonWriter.write("from " + currentLine + "\n");
+                    }
+                    else {
+                        pythonWriter.write(tempLine);
+                        System.out.println("JusLog: Possible import mismatch. Check DynamicAnalysis FROM case.");
                     }
                 }
-
-                pythonWriter.println(currentLine + "\n");
-                // if line begins with def
-                System.out.println("RorLog: now currentLine is:"+currentLine);
-                if (currentLine.length() > 3){
-                    if(currentLine.trim().startsWith("def")){
-                        currentLine = currentLine.substring(4); // Removing "def " from the current line
-
-                        String methodName = getMethodName(currentLine);
-
-                        // Get argument values and print log().
-                        pythonWriter.println("paramsDict = [locals()[arg] for arg in inspect.getargspec(" + methodName + ").args]\n" +
-                                            "log(paramsDict)\n");
-                    }
+                // If the file has a class, defs have two indents, and there is a class name.
+                else if (currentLine.length() > 5 && currentLine.substring(0, 5).equals("class")) {
+                    varINDENT = "        ";
+                    className = currentLine.substring(6, currentLine.length() - 1);
+                    dynamicHasClass = true;
+                    pythonWriter.write(currentLine + "\n");
                 }
-                currentLine = reader.readLine();
+                // if method def,
+                else if(currentLine.trim().startsWith("def")){
+                    String tempLine = currentLine;
+                    // Removing "def " from the current line
+                    currentLine = currentLine.substring((4 + varINDENT.length() - 4));
+
+                    if(dynamicHasClass) {
+                        methodName = className + "." + getMethodName(currentLine);
+                    }
+                    else {
+                        methodName = getMethodName(currentLine);
+                    }
+
+                    // Get argument values and print log().
+                    pythonWriter.write(tempLine + "\n" +
+                            varINDENT + "paramsDict = [locals()[arg] for arg in inspect.getargspec(" + methodName + ").args]\n" +
+                            varINDENT + "log(paramsDict)\n");
+
+
+                }
+                else{
+                    pythonWriter.write(currentLine + "\n");
+                }
             }
             // Print endlog()
-            pythonWriter.println("endlog()");
+            pythonWriter.write("\n\nendlog()\n");
+            // Close the writer.
+            pythonWriter.close();
 
+
+
+
+            /*
             // Get path to Python File for logging (assuming we ALWAYS start with Main.py)
             //      - Current location is CPSC410-Softwa...\JavaProject\src
             //      - Want to move outside of src and JavaProject into
             //      - Once in CPSC410-Softwa..., move into Python410
-            String path = "..\\..\\Python410";
-            String pathToPythonFile = path + "\\LOG_Main.py";
+            String fileSeparator =  System.getProperty("file.separator");
+            String path = "C:" + fileSeparator + "Users" + fileSeparator + "REDACTED" + fileSeparator + "Documents"
+                    + fileSeparator + "CPSC410" + fileSeparator + "CPSC410-Software-Visualization-Project" + fileSeparator + "Python410";
+            String pathToPythonFile = path + fileSeparator + "Main.py";
 
             // Execute python code:
             try {
@@ -175,8 +218,10 @@ public class PythonAnaliser {
                 Process p = Runtime.getRuntime().exec(command + params);
 
                 JSONParser parser = new JSONParser();
+
+
                 try {
-                    Object obj = parser.parse(new FileReader("..\\..\\Python410\\dynamic.json"));
+                    Object obj = parser.parse(new FileReader(".." + fileSeparator + ".." + fileSeparator + "Python410" + fileSeparator + "dynamic.json"));
                     JSONObject jsonObject =  (JSONObject) obj;
                     // TODO: Write dynamic.json into writer
 
@@ -191,6 +236,7 @@ public class PythonAnaliser {
             } catch (Exception e) {
                 System.out.println("Cannot begin logging. Check the Python logging path.");
             }
+        */
         }
     }
 }
