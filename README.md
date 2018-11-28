@@ -12,6 +12,7 @@ Note: A few constraints must be met in the python code for this program to work 
 - One class per file
 - All python files are in the same directory
 - Each class definition, method definition, and method calls must be on their own line
+- Spaces for indentation (otherwise the Java-to-Python code injection will have inconsistent indentation!)
 
 In order to run all the programs you must:
 - Download and install java and add it to your path/environment variables. The JDK must be over version 10.
