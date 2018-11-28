@@ -1,3 +1,4 @@
-.class {
-	font-size: 16px;
+.button:focus {
+	color: #9fa6ad;
+	background-color: #34404c;
 }

@@ -7,30 +7,50 @@ import Classes from './components/classes'
 import Method from './components/method'
 import List from '@material-ui/core/List';
 import ListSubheader from '@material-ui/core/ListSubheader';
-
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
 
 
 class App extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {methodsToDisplay: [], currentFilter: '', dynamicData: jsonData.dynamic}
+    this.state = {methodsToDisplay: [], currentFilter: '', dynamicData: jsonData.dynamic, currentClass: ''}
     this.classHandler = this.classHandler.bind(this)
     this.methodHandler = this.methodHandler.bind(this)
+    this.itemHandler = this.itemHandler.bind(this)
   }
 
-  classHandler = (methods) => {
-    this.setState({methodsToDisplay: methods, currentFilter: ''})
+  classHandler = (methods, name) => {
+    this.setState({methodsToDisplay: methods, currentFilter: '', currentClass: name})
   }
 
   methodHandler = (method) => {
     this.setState({currentFilter: method})
   }
 
+  itemHandler = (calledBy) => {
+    let c = calledBy.split('.')[0]
+    let method = calledBy.split('.')[1]
+    let mToDisplay = []
+    let s = jsonData.static;
+    for (let i = 0; i < s.length; i++) {
+      let name = Object.keys(s[i])[0]
+      if (name == c) {
+        mToDisplay = s[i][name]
+      }
+    }
+    this.setState({currentClass: c, currentFilter: method, methodsToDisplay: mToDisplay})
+  }
+
   makeClass(c) {
     let name = Object.keys(c)[0];
     let methods = c[name];
-    return <Classes name={name} methods={methods} handler={this.classHandler}/>
+    return (
+    <div className="classItem">
+      <Classes name={name} methods={methods} handler={this.classHandler}/>
+    </div>)
   }
 
   makeMethod(m) {
@@ -38,15 +58,18 @@ class App extends Component {
   }
 
   makeItems() {
-    let filtered = this.state.dynamicData.filter(i => (i.caller+i.called).includes(this.state.currentFilter))
-    let items = filtered.map( i => <Item caller={i.caller} called={i.called} params={i.params} /> )
+    let filtered = this.state.dynamicData.filter(i => i.called.includes(this.state.currentFilter))
+    let items = filtered.map( i => <Item caller={i.caller} called={i.called} params={i.params} handler={this.itemHandler} /> )
     return items;
   }
 
   render() {
-    console.log(jsonData.dynamic)
     let s = jsonData.static;
     let classList = s.map(c => this.makeClass(c))
+    let cc = 'Select a class!'
+    if (this.state.currentClass) {
+      cc = 'In Class: ' + this.state.currentClass
+    }
     return (
       <div className="App">
         <header className="App-header">
@@ -55,19 +78,28 @@ class App extends Component {
         </header>
         <div className="App-body">
           <div className="classes">
-            <List subheader={<ListSubheader>Classes</ListSubheader>} >
+            <List subheader={<ListSubheader style={{fontSize: '25px'}}>Classes</ListSubheader>} >
+              <Divider />
               {classList}
             </List>
           </div>
           <div className="divider"/>
           <div className="methods">
-            <List subheader={<ListSubheader>Methods</ListSubheader>} >
+            <List subheader={<ListSubheader style={{fontSize: '25px'}}>Methods</ListSubheader>} >
+              <Divider />
+              <ListItem>
+                <ListItemText 
+                  style={{textAlign: 'center'}}
+                  primary={cc} />
+              </ListItem>
+              <Divider />
               {!this.state.methodsToDisplay ? <div/> : this.state.methodsToDisplay.map(m => this.makeMethod(m))}
             </List>
           </div>
           <div className="divider"/>
           <div className="items">
-            <List subheader={<ListSubheader>Usage</ListSubheader>} >
+            <List subheader={<ListSubheader style={{fontSize: '25px'}}>Usage</ListSubheader>} >
+              <Divider />
               {!this.state.currentFilter ? <div/> : this.makeItems()}
             </List>
           </div>

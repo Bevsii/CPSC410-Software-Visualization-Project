@@ -11,6 +11,10 @@
       "methd",
       "methe"
       ]
+    },
+    {"classc" : [
+      "methz"
+      ]
     }
   ],
   "dynamic" : [
@@ -30,14 +34,19 @@
       "params": ["this is a string"]
     },
     {
-      "called": "classb.methd",
-      "caller": "classa.methb",
+      "called": "classb.methb",
+      "caller": "classa.meth1",
       "params": [32, false]
     },
     {
       "called": "classb.methd",
       "caller": "classa.methb",
       "params": [32, false]
+    },
+    {
+      "called": "classa.methc",
+      "caller": "classb.methd",
+      "params": [17, true]
     }
   ]
 }

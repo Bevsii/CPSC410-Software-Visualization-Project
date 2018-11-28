@@ -9,9 +9,12 @@ class Classes extends Component {
 
 	render() {
 		return (
-			<Button fullWidth={true} onClick={() => this.props.handler(this.props.methods)}>
-				{this.props.name}
-			</Button>
+			<div>
+				<Button fullWidth={true} classes={{root: 'button'}} onClick={() => this.props.handler(this.props.methods, this.props.name)}>
+					{this.props.name}
+				</Button>
+				<div style={{height: 5}} />
+			</div>
 		)
 	}
 }

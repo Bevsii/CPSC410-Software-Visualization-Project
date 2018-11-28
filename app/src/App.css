@@ -28,30 +28,36 @@
   align-items: left;
   justify-content: left;
   background-color: #9fa6ad;
-  height: 700px;
+  height: 100%;
 }
 
 .divider {
-  height: 700px;
+  height: 100%;
   background-color: #34404c;
   width: 2px;
+  margin-left: 2px;
+  margin-right: 2px;
 }
 
 .classes {
   width: 20%;
-  height: 90%;
+  height: 100%;
   overflow: scroll;
+}
+
+.classItem:focus {
+  background-color: #34404c;
 }
 
 .methods {
   width: 20%;
-  height: 90%;
+  height: 100%;
   overflow: scroll;
 }
 
 .items {
   width: 60%;
-  height: 90%;
+  height: 100%;
   overflow: scroll;
 }
 
