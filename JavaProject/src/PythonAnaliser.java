@@ -80,9 +80,11 @@ public class PythonAnaliser {
                 writer.print("\n");
                 writer.println(INDENT + INDENT + INDENT + "]");
 
+                // If "static" is not at its end yet, add comma
                 if(files.hasNext()) {
                     writer.println(INDENT + INDENT + "},");
                 }
+                // Otherwise, close w/o comma
                 else {
                     writer.println(INDENT + INDENT + "}");
                 }
