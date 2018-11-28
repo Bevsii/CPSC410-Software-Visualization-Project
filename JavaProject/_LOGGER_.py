@@ -1,7 +1,6 @@
 import json
 import inspect
-
-outfile = open('dynamic.json', 'x')
+import os
 
 
 def log(paramsDict):
@@ -14,17 +13,26 @@ def log(paramsDict):
         "params": paramsDict
     }
 
-    dynamicJSON['dynamic'].append(dynamicBlock)
+    dynamic['dynamic'].append(dynamicBlock)
 
 
 def startlog():
-    global dynamicJSON
-    dynamicJSON = {}
-    dynamicJSON['dynamic'] = []
+    try:
+        open('dynamic.json', 'r')
+    except IOError:
+        open('dynamic.json', 'w')
+    with open('dynamic.json', 'r') as dynamicJSON:
+        global dynamic
+        if os.stat('dynamic.json').st_size == 0 :
+            dynamic = {}
+            dynamic['dynamic'] = []
+        else:
+            dynamic = json.load(dynamicJSON)
 
 
 def endlog():
-    json.dump(dynamicJSON, outfile)
+    with open('dynamic.json', 'w') as dynamicJSON:
+        json.dump(dynamic, dynamicJSON)
 
 
 # This outputs a JSON file with the following format:

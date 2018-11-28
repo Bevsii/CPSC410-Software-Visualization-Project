@@ -181,10 +181,19 @@ public class PythonAnaliser {
                     }
 
                     // Get argument values and print log().
+                    /*
                     pythonWriter.write(tempLine + "\n" +
                             varINDENT + "paramsDict = [locals()[arg] for arg in inspect.getargspec(" + methodName + ").args]\n" +
                             varINDENT + "log(paramsDict)\n");
-
+                    */
+                    pythonWriter.write(tempLine + "\n" +
+                            varINDENT + "paramsDict = []\n" +
+                            varINDENT + "for arg in inspect.getfullargspec(" + methodName + ").args:\n" +
+                            varINDENT + "    " + "if not isinstance(type(arg), type):\n" +
+                            varINDENT + "        " + "paramsDict.append(locals()[arg])\n" +
+                            varINDENT + "    " + "else:\n"+
+                            varINDENT + "        " + "paramsDict.append(arg)\n" +
+                            varINDENT + "log(paramsDict)\n");
 
                 }
                 else{
@@ -195,48 +204,34 @@ public class PythonAnaliser {
             pythonWriter.write("\n\nendlog()\n");
             // Close the writer.
             pythonWriter.close();
+        }
 
-
+        // Execute python code:
+        try {
+            // /wait to wait for command to finish executing (as in, wait until we have all the files done.
+            String command = "python /wait Main.py";
+            // Process p = Runtime.getRuntime().exec(command);
+            ProcessBuilder pb = new ProcessBuilder("python","/wait", "Main.py");
+            Process p = pb.start();
 
 
             /*
-            // Get path to Python File for logging (assuming we ALWAYS start with Main.py)
-            //      - Current location is CPSC410-Softwa...\JavaProject\src
-            //      - Want to move outside of src and JavaProject into
-            //      - Once in CPSC410-Softwa..., move into Python410
-            String fileSeparator =  System.getProperty("file.separator");
-            String path = "C:" + fileSeparator + "Users" + fileSeparator + "REDACTED" + fileSeparator + "Documents"
-                    + fileSeparator + "CPSC410" + fileSeparator + "CPSC410-Software-Visualization-Project" + fileSeparator + "Python410";
-            String pathToPythonFile = path + fileSeparator + "Main.py";
-
-            // Execute python code:
             try {
-                // /wait to wait for command to finish executing (as in, wait until we have all the files done.
-                String command = "python /c start /wait python " + pathToPythonFile;
-                // Add parameters accordingly
-                String params = "";
-                Process p = Runtime.getRuntime().exec(command + params);
-
                 JSONParser parser = new JSONParser();
+                Object obj = parser.parse(new FileReader(".." + fileSeparator + ".." + fileSeparator + "Python410" + fileSeparator + "dynamic.json"));
+                JSONObject jsonObject =  (JSONObject) obj;
+                // TODO: Write dynamic.json into writer
 
-
-                try {
-                    Object obj = parser.parse(new FileReader(".." + fileSeparator + ".." + fileSeparator + "Python410" + fileSeparator + "dynamic.json"));
-                    JSONObject jsonObject =  (JSONObject) obj;
-                    // TODO: Write dynamic.json into writer
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-            } catch (Exception e) {
-                System.out.println("Cannot begin logging. Check the Python logging path.");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-        */
+            */
+        } catch (Exception e) {
+            System.out.println("Cannot begin logging. Check the Python logging path." + e);
         }
     }
 
