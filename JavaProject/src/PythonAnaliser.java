@@ -40,8 +40,9 @@ public class PythonAnaliser {
     public void StaticAnalysis(PrintWriter writer) throws IOException {
 
         writer.println(INDENT + "\"static\" : [");
-
-        for(File file : pythonFiles) {
+        Iterator<File> files = pythonFiles.iterator();
+        while(files.hasNext()) {
+            File file = files.next();
             BufferedReader reader = new BufferedReader(new FileReader(file));
             boolean fileHasClass = false;
             boolean hasFoundFirstMethod = false;
@@ -78,7 +79,13 @@ public class PythonAnaliser {
             if(fileHasClass) {
                 writer.print("\n");
                 writer.println(INDENT + INDENT + INDENT + "]");
-                writer.println(INDENT + INDENT + "}");
+
+                if(files.hasNext()) {
+                    writer.println(INDENT + INDENT + "},");
+                }
+                else {
+                    writer.println(INDENT + INDENT + "}");
+                }
             }
         }
 
