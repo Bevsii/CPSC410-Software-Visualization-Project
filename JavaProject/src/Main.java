@@ -28,8 +28,6 @@ public class Main {
 
         PythonAnaliser pythonAnaliser = new PythonAnaliser(directoryPath);
 
-        // TODO: Delete all Python files starting with "LOG_" in Python410
-
         // Create new output file
         File outputFile = new File(outputFileName);
 
