@@ -232,11 +232,19 @@ public class PythonAnaliser {
                 JSONParser parser = new JSONParser();
                 Object obj = parser.parse(new FileReader("dynamic.json"));
                 JSONObject jsonObject =  (JSONObject) obj;
-                // TODO: Write dynamic.json into writer
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
                 ObjectWriter prettyWriter = mapper.writerWithDefaultPrettyPrinter();
-                prettyWriter.writeValue(new File("Analysis.JSON"), jsonObject);
+                prettyWriter.writeValue(new File("dynamic.json"), jsonObject);
+                // Now we have a perfectly formatted dynamic.json.
+
+                BufferedReader dynamicReader = new BufferedReader(new FileReader("dynamic.json"));
+                String line;
+                // skip first curly bracket
+                dynamicReader.readLine();
+                while((line = dynamicReader.readLine()) != null) {
+                    writer.println(line);
+                }
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

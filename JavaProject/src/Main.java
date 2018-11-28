@@ -17,16 +17,18 @@ public class Main {
         else{
             directoryPath = args[0];
         }
-
         //Set up the path for the output file
-        //String fileSeparator =  System.getProperty("file.separator");
+        String fileSeparator =  System.getProperty("file.separator");
+        //String parentDirectory = "D:\\Users\\konpeitoBOX\\Documents\\UBC\\CPSC410";
         //String parentDirectory = "/Users/rorycourt/1-UBC/04/410";
         //String parentDirectory = "E:";
 
         // NOTE: This is hardcoded for testing purposes only, normally we are going to get the absolute path to the python from the terminal arguments
         //String tempLocation = parentDirectory + fileSeparator + "CPSC410-Software-Visualization-Project"+ fileSeparator+ "410Python" + fileSeparator + "School";
 
+        //PythonAnaliser pythonAnaliser = new PythonAnaliser(directoryPath);
         PythonAnaliser pythonAnaliser = new PythonAnaliser(directoryPath);
+        // TODO: Delete all Python files starting with "LOG_" in Python410
 
         // Create new output file
         File outputFile = new File(outputFileName);
@@ -46,8 +48,6 @@ public class Main {
 
         // STATIC ANALYSIS
         pythonAnaliser.StaticAnalysis(writer);
-
-        writer.println("}");
 
         pythonAnaliser.DynamicAnalysis(writer);
 
